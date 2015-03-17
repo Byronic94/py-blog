@@ -170,6 +170,7 @@ class ModelMetaclass(type):
 class Model(dict):
     '''
     Base class for ORM.
+
     >>> class User(Model):
     ...     id = IntegerField(primary_key=True)
     ...     name = StringField()

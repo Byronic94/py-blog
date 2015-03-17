@@ -14,6 +14,7 @@ import time, uuid, functools, threading, logging
 class Dict(dict):
     '''
     Simple dict but support access as x.y style.
+
     >>> d1 = Dict()
     >>> d1['x'] = 100
     >>> d1.x
@@ -57,6 +58,7 @@ class Dict(dict):
 def next_id(t=None):
     '''
     Return next id as 50-char string.
+
     Args:
         t: unix timestamp, default to None and using time.time().
     '''
@@ -161,6 +163,7 @@ class _ConnectionCtx(object):
     '''
     _ConnectionCtx object that can open and close connection context. _ConnectionCtx object can be nested and only the most 
     outer connection has effect.
+
     with connection():
         pass
         with connection():
@@ -182,6 +185,7 @@ class _ConnectionCtx(object):
 def connection():
     '''
     Return _ConnectionCtx object that can be used by 'with' statement:
+
     with connection():
         pass
     '''
@@ -190,6 +194,7 @@ def connection():
 def with_connection(func):
     '''
     Decorator for reuse connection.
+
     @with_connection
     def foo(*args, **kw):
         f1()
@@ -205,6 +210,7 @@ def with_connection(func):
 class _TransactionCtx(object):
     '''
     _TransactionCtx object that can handle transactions.
+
     with _TransactionCtx():
         pass
     '''
@@ -254,8 +260,10 @@ class _TransactionCtx(object):
 def transaction():
     '''
     Create a transaction object so can use with statement:
+
     with transaction():
         pass
+
     >>> def update_profile(id, name, rollback):
     ...     u = dict(id=id, name=name, email='%s@test.org' % name, passwd=name, last_modified=time.time())
     ...     insert('user', **u)
@@ -279,6 +287,7 @@ def transaction():
 def with_transaction(func):
     '''
     A decorator that makes function around transaction.
+
     >>> @with_transaction
     ... def update_profile(id, name, rollback):
     ...     u = dict(id=id, name=name, email='%s@test.org' % name, passwd=name, last_modified=time.time())
@@ -331,6 +340,7 @@ def select_one(sql, *args):
     Execute select SQL and expected one result. 
     If no result found, return None.
     If multiple results found, the first one returned.
+
     >>> u1 = dict(id=100, name='Alice', email='alice@test.org', passwd='ABC-12345', last_modified=time.time())
     >>> u2 = dict(id=101, name='Sarah', email='sarah@test.org', passwd='ABC-12345', last_modified=time.time())
     >>> insert('user', **u1)
@@ -351,6 +361,7 @@ def select_one(sql, *args):
 def select_int(sql, *args):
     '''
     Execute select SQL and expected one int and only one int result. 
+
     >>> n = update('delete from user')
     >>> u1 = dict(id=96900, name='Ada', email='ada@test.org', passwd='A-12345', last_modified=time.time())
     >>> u2 = dict(id=96901, name='Adam', email='adam@test.org', passwd='A-12345', last_modified=time.time())
@@ -380,6 +391,7 @@ def select_int(sql, *args):
 def select(sql, *args):
     '''
     Execute select SQL and return list or empty list if no result.
+
     >>> u1 = dict(id=200, name='Wall.E', email='wall.e@test.org', passwd='back-to-earth', last_modified=time.time())
     >>> u2 = dict(id=201, name='Eva', email='eva@test.org', passwd='back-to-earth', last_modified=time.time())
     >>> insert('user', **u1)
@@ -422,6 +434,7 @@ def _update(sql, *args):
 def insert(table, **kw):
     '''
     Execute insert SQL.
+
     >>> u1 = dict(id=2000, name='Bob', email='bob@test.org', passwd='bobobob', last_modified=time.time())
     >>> insert('user', **u1)
     1
@@ -440,6 +453,7 @@ def insert(table, **kw):
 def update(sql, *args):
     r'''
     Execute update SQL.
+
     >>> u1 = dict(id=1000, name='Michael', email='michael@test.org', passwd='123456', last_modified=time.time())
     >>> insert('user', **u1)
     1
@@ -462,7 +476,7 @@ def update(sql, *args):
 
 if __name__=='__main__':
     logging.basicConfig(level=logging.DEBUG)
-    create_engine('www', 'www', 'test')
+    create_engine('www-data', 'www-data', 'test')
     update('drop table if exists user')
     update('create table user (id int primary key, name text, email text, passwd text, last_modified real)')
     import doctest
